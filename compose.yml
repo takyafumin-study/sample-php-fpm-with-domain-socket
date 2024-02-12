@@ -1,0 +1,28 @@
+services:
+
+  web:
+    image: php-socket-dev-web
+    build:
+      context: .
+      dockerfile: ./.docker/nginx/Dockerfile
+      target: dev
+    init: true
+    ports:
+      - "127.0.0.1:80:80"
+    environment:
+      TZ: ${TZ}
+      SERVER_NAME: localhost
+      PHP_HOST: app
+    volumes:
+      - ./src/public:/var/www/src/public
+
+  app:
+    image: php-socket-dev-app
+    build:
+      context: .
+      dockerfile: ./.docker/php/Dockerfile
+      target: dev
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ./src:/var/www/src
